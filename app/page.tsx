@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // 構成品の定義（要件定義書に基づく）
 const diaperItems = [
@@ -77,6 +77,14 @@ export default function Home() {
   const [usedWeight, setUsedWeight] = useState<number | "">("");
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
   const [isInputting, setIsInputting] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // アプリ起動時にテキストボックスにフォーカス
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   // 構成品を追加
   const addItem = (item: (typeof diaperItems)[0]) => {
@@ -182,6 +190,7 @@ export default function Home() {
         {/* 使用済み重量入力欄 */}
         <div className="space-y-2">
           <input
+            ref={inputRef}
             id="usedWeight"
             type="number"
             value={isInputting ? usedWeight : calculatedValue}
